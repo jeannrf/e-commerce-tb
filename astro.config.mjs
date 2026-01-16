@@ -2,12 +2,13 @@ import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import sanity from '@sanity/astro';
 
-import node from '@astrojs/node';
+import vercel from '@astrojs/vercel/serverless';
 
 import react from '@astrojs/react';
 
 // https://astro.build/config
 export default defineConfig({
+  output: 'server',
   integrations: [sanity({
     projectId: '3u2452q3',
     dataset: 'production',
@@ -18,7 +19,7 @@ export default defineConfig({
     plugins: [tailwindcss()]
   },
 
-  adapter: node({
-    mode: 'standalone'
+  adapter: vercel({
+    webAnalytics: { enabled: true }
   })
 });
