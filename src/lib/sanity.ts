@@ -78,3 +78,22 @@ async function fetchProductsFromSanity(cachePath?: string) {
     return [];
   }
 }
+
+export async function getHeroData() {
+  const query = `*[_type == "hero"][0] {
+    title,
+    subtitle,
+    heroImage,
+    buttonText,
+    buttonLink,
+    badgeText
+  }`;
+
+  try {
+    const heroData = await client.fetch(query);
+    return heroData;
+  } catch (error) {
+    console.error("Error fetching hero data:", error);
+    return null;
+  }
+}
