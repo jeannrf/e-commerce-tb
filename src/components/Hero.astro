@@ -1,19 +1,5 @@
 ---
 import { ArrowRight, Star } from "lucide-astro";
-import { getHeroData, urlFor } from "../lib/sanity";
-
-const hero = await getHeroData();
-
-const title = hero?.title || "Viste la Gloria Blanquiazul";
-const subtitle =
-  hero?.subtitle ||
-  "La tienda oficial para el hincha que deja la garganta en la tribuna. Camisetas 2026, indumentaria histórica y accesorios exclusivos.";
-const badgeText = hero?.badgeText || "Nueva Colección 2026";
-const buttonText = hero?.buttonText || "Ver Colección 2026";
-const buttonLink = hero?.buttonLink || "/tienda?categoria=Camisetas";
-const heroImage = hero?.heroImage
-  ? urlFor(hero.heroImage).url()
-  : "/images/hero-jersey.png";
 ---
 
 <section class="relative flex items-center pt-24 pb-20 overflow-hidden">
@@ -94,7 +80,7 @@ const heroImage = hero?.heroImage
           class="inline-flex items-center gap-2 bg-primary/10 dark:bg-white/10 text-primary dark:text-white px-4 py-2 rounded-full text-sm font-medium mb-6 animate-fade-in"
         >
           <Star class="w-4 h-4 text-accent-gold fill-accent-gold" />
-          <span>{badgeText}</span>
+          <span>Nueva Colección 2026</span>
         </div>
 
         <!-- Title -->
@@ -102,11 +88,11 @@ const heroImage = hero?.heroImage
           class="font-extrabold leading-[1.1] mb-6 animate-slide-up dark:text-white"
         >
           <span class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl block mb-2"
-            >{title.split(" ").slice(0, -1).join(" ")}</span
+            >Viste la Gloria</span
           >
           <span
             class="gradient-text text-3xl sm:text-4xl lg:text-5xl xl:text-7xl block"
-            >{title.split(" ").slice(-1)}</span
+            >Blanquiazul</span
           >
         </h1>
 
@@ -114,7 +100,8 @@ const heroImage = hero?.heroImage
         <p
           class="text-lg lg:text-xl text-text-muted dark:text-white/70 max-w-xl mx-auto lg:mx-0 mb-8 animate-slide-up stagger-1"
         >
-          {subtitle}
+          La tienda oficial para el hincha que deja la garganta en la tribuna.
+          Camisetas 2026, indumentaria histórica y accesorios exclusivos.
         </p>
 
         <!-- CTAs -->
@@ -122,16 +109,16 @@ const heroImage = hero?.heroImage
           class="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start animate-slide-up stagger-2"
         >
           <a
-            href={buttonLink}
+            href="/tienda?categoria=Camisetas"
             class="btn-primary w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-primary text-white px-8 py-4 rounded-lg font-bold text-lg group"
           >
-            {buttonText}
+            Ver Colección 2026
             <ArrowRight
               class="w-5 h-5 group-hover:translate-x-1 transition-transform"
             />
           </a>
           <a
-            href="/tienda?categoria=Retro"
+            href="/tienda?categoria=Camisetas"
             class="w-full sm:w-auto inline-flex items-center justify-center gap-2 border-2 border-primary dark:border-white text-primary dark:text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-primary dark:hover:bg-white hover:text-white dark:hover:text-primary transition-all"
           >
             Colección Histórica
@@ -185,8 +172,8 @@ const heroImage = hero?.heroImage
             class="relative aspect-square lg:aspect-[4/5] max-h-[400px] lg:max-h-[500px] rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-primary/10 to-accent-gold/10"
           >
             <img
-              src={heroImage}
-              alt="Portada Principal"
+              src="/images/hero-jersey.png"
+              alt="Camiseta Alianza Lima 2026"
               class="w-full h-full object-cover"
               onerror="this.parentElement.innerHTML='<div class=\'w-full h-full flex items-center justify-center bg-gradient-to-br from-primary to-primary-light\'><span class=\'text-white text-9xl font-bold opacity-20\'>AL</span></div>'"
             />
