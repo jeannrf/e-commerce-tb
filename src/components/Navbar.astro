@@ -1,0 +1,221 @@
+---
+import { Menu, X, ShoppingBag, Phone, Sun, Moon } from "lucide-astro";
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 glass-dark">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16 lg:h-20">
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-2 group">
+        <div
+          class="w-10 h-10 bg-white rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform"
+        >
+          <ShoppingBag class="w-5 h-5 text-primary" />
+        </div>
+        <span
+          class="text-xl lg:text-2xl font-extrabold text-white tracking-tight"
+        >
+          TRIBUNA<span class="text-accent-gold">SVR</span>
+        </span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden lg:flex items-center gap-8">
+        <a
+          href="/tienda?categoria=Camisetas"
+          class="text-white/80 font-medium hover:text-accent-gold transition-colors relative group"
+        >
+          Camisetas
+          <span
+            class="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent-gold transition-all group-hover:w-full"
+          ></span>
+        </a>
+        <a
+          href="/tienda?categoria=Accesorios"
+          class="text-white/80 font-medium hover:text-accent-gold transition-colors relative group"
+        >
+          Accesorios
+          <span
+            class="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent-gold transition-all group-hover:w-full"
+          ></span>
+        </a>
+        <a
+          href="/tienda?categoria=Retro"
+          class="text-white/80 font-medium hover:text-accent-gold transition-colors relative group"
+        >
+          Retro
+          <span
+            class="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent-gold transition-all group-hover:w-full"
+          ></span>
+        </a>
+      </div>
+
+      <!-- Desktop CTA -->
+      <div class="hidden lg:flex items-center gap-4">
+        <a
+          href="#nosotros"
+          class="text-white/80 font-medium hover:text-accent-gold transition-colors"
+        >
+          Sobre Nosotros
+        </a>
+
+        <!-- Dark Mode Toggle - Moon in light, Sun in dark -->
+        <button
+          id="theme-toggle"
+          class="theme-toggle p-2 text-white/80 hover:text-accent-gold rounded-lg transition-colors"
+          aria-label="Cambiar tema"
+        >
+          <Moon class="w-5 h-5 dark:hidden" />
+          <Sun class="w-5 h-5 hidden dark:block" />
+        </button>
+
+        <a
+          href="https://wa.me/51982089087?text=Hola%20Tribuna%20SVR!%20Me%20interesa%20conocer%20más%20sobre%20sus%20productos."
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-primary inline-flex items-center gap-2 bg-accent-gold text-primary-dark px-5 py-2.5 rounded-lg font-semibold hover:bg-white transition-colors"
+        >
+          <Phone class="w-4 h-4" />
+          Contacto
+        </a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <div class="lg:hidden flex items-center gap-2">
+        <!-- Mobile Dark Mode Toggle -->
+        <button
+          id="theme-toggle-mobile"
+          class="theme-toggle p-2 text-white/80 hover:text-accent-gold rounded-lg transition-colors"
+          aria-label="Cambiar tema"
+        >
+          <Moon class="w-5 h-5 dark:hidden" />
+          <Sun class="w-5 h-5 hidden dark:block" />
+        </button>
+
+        <button
+          id="mobile-menu-btn"
+          class="p-2 text-white hover:bg-white/10 rounded-lg transition-colors"
+          aria-label="Abrir menú"
+        >
+          <Menu class="w-6 h-6" id="menu-icon" />
+          <X class="w-6 h-6 hidden" id="close-icon" />
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="lg:hidden hidden pb-4">
+      <div class="flex flex-col gap-2 pt-4 border-t border-white/10">
+        <a
+          href="/tienda?categoria=Camisetas"
+          class="text-white/80 font-medium py-2 hover:text-accent-gold transition-colors"
+          >Camisetas</a
+        >
+        <a
+          href="/tienda?categoria=Accesorios"
+          class="text-white/80 font-medium py-2 hover:text-accent-gold transition-colors"
+          >Accesorios</a
+        >
+        <a
+          href="/tienda?categoria=Retro"
+          class="text-white/80 font-medium py-2 hover:text-accent-gold transition-colors"
+          >Retro</a
+        >
+        <a
+          href="#nosotros"
+          class="text-white/80 font-medium py-2 hover:text-accent-gold transition-colors"
+          >Sobre Nosotros</a
+        >
+        <a
+          href="https://wa.me/51982089087?text=Hola%20Tribuna%20SVR!%20Me%20interesa%20conocer%20más%20sobre%20sus%20productos."
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-primary inline-flex items-center justify-center gap-2 bg-accent-gold text-primary-dark px-5 py-3 rounded-lg font-semibold mt-2"
+        >
+          <Phone class="w-4 h-4" />
+          Contactar por WhatsApp
+        </a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<script>
+  // Mobile menu functionality
+  const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+  const mobileMenu = document.getElementById("mobile-menu");
+  const menuIcon = document.getElementById("menu-icon");
+  const closeIcon = document.getElementById("close-icon");
+
+  mobileMenuBtn?.addEventListener("click", () => {
+    mobileMenu?.classList.toggle("hidden");
+    menuIcon?.classList.toggle("hidden");
+    closeIcon?.classList.toggle("hidden");
+  });
+
+  // Close menu on link click
+  mobileMenu?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      mobileMenu?.classList.add("hidden");
+      menuIcon?.classList.remove("hidden");
+      closeIcon?.classList.add("hidden");
+    });
+  });
+
+  // Function to update theme icons based on current theme
+  function updateThemeIcons() {
+    const html = document.documentElement;
+    const isDark = html.classList.contains("dark");
+
+    document.querySelectorAll(".theme-toggle").forEach((button) => {
+      const moonIcon = button.querySelector("svg.dark\\:hidden"); // Moon icon
+      const sunIcon = button.querySelector("svg.hidden.dark\\:block"); // Sun icon
+
+      if (moonIcon && sunIcon) {
+        if (isDark) {
+          moonIcon.classList.add("hidden");
+          sunIcon.classList.remove("hidden");
+        } else {
+          moonIcon.classList.remove("hidden");
+          sunIcon.classList.add("hidden");
+        }
+      }
+    });
+  }
+
+  // Dark Mode Toggle
+  function toggleTheme() {
+    const html = document.documentElement;
+    const isDark = html.classList.contains("dark");
+
+    if (isDark) {
+      html.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    } else {
+      html.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    }
+    updateThemeIcons();
+  }
+
+  // Initialize theme on page load
+  function initTheme() {
+    // FORCE RESET TO LIGHT MODE
+    document.documentElement.classList.remove("dark");
+    localStorage.setItem("theme", "light");
+
+    // Update icons
+    updateThemeIcons();
+  }
+
+  // Event listeners for theme toggle
+  document
+    .getElementById("theme-toggle")
+    ?.addEventListener("click", toggleTheme);
+  document
+    .getElementById("theme-toggle-mobile")
+    ?.addEventListener("click", toggleTheme);
+
+  // Initialize on page load
+  initTheme();
+</script>

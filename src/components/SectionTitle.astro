@@ -1,0 +1,21 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  align?: 'left' | 'center';
+}
+
+const { title, subtitle, align = 'center' } = Astro.props;
+---
+
+<div class={`mb-12 ${align === 'center' ? 'text-center' : 'text-left'} animate-on-scroll`}>
+  <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-text">
+    {title}
+  </h2>
+  {subtitle && (
+    <p class="mt-4 text-lg text-text-muted max-w-2xl mx-auto">
+      {subtitle}
+    </p>
+  )}
+  <div class={`mt-6 h-1 w-20 bg-gradient-to-r from-primary to-accent-gold rounded-full ${align === 'center' ? 'mx-auto' : ''}`}></div>
+</div>

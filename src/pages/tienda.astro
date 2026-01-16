@@ -1,0 +1,227 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ProductCard from '../components/ProductCard.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import { ChevronLeft, ChevronRight, SlidersHorizontal, Search, X } from 'lucide-astro';
+import { getProducts, urlFor } from '../lib/sanity';
+
+// Get params from URL
+const categoriaQuery = Astro.url.searchParams.get('categoria') || 'Todos';
+const pageQuery = parseInt(Astro.url.searchParams.get('pagina') || '1');
+const searchQuery = Astro.url.searchParams.get('q') || '';
+
+// Fetch products from Sanity
+const allProducts = await getProducts();
+
+// Map Sanity data to our component format
+const products = allProducts.map((p: any) => ({
+  id: p._id,
+  name: p.name,
+  price: p.price,
+  oldPrice: p.oldPrice,
+  category: p.category,
+  isNew: p.isNew,
+  image: p.image ? urlFor(p.image).url() : null,
+  description: p.description
+}));
+
+// Filter products
+let filteredProducts = products.filter((p: any) => {
+  const matchesCategory = categoriaQuery === 'Todos' || p.category === categoriaQuery;
+  const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                        p.description.toLowerCase().includes(searchQuery.toLowerCase());
+  return matchesCategory && matchesSearch;
+});
+
+// Pagination settings
+const itemsPerPage = 8;
+const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+const currentPage = Math.max(1, Math.min(pageQuery, totalPages || 1));
+const startIndex = (currentPage - 1) * itemsPerPage;
+const endIndex = startIndex + itemsPerPage;
+const currentProducts = filteredProducts.slice(startIndex, endIndex);
+
+const categories = ['Todos', 'Camisetas', 'Accesorios', 'Retro'];
+---
+
+<Layout title="Tienda Oficial | Tribuna SVR">
+  <Navbar />
+  
+  <main class="pt-24 pb-20 bg-white dark:bg-primary-dark transition-colors duration-300">
+    <!-- Header -->
+    <header class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+          <nav class="flex items-center gap-2 text-sm text-text-muted mb-4 dark:text-white/60">
+            <a href="/" class="hover:text-primary transition-colors">Inicio</a>
+            <span>/</span>
+            <span class="text-primary font-medium dark:text-accent-gold">Tienda</span>
+          </nav>
+          <h1 class="text-4xl lg:text-5xl font-extrabold text-primary dark:text-white">
+            Nuestra <span class="gradient-text">Colección</span>
+          </h1>
+        </div>
+        
+        <!-- Search Bar -->
+        <div class="relative w-full md:w-96">
+          <form action="/tienda" method="GET">
+            <input 
+              type="text" 
+              name="q" 
+              value={searchQuery}
+              placeholder="Buscar productos..." 
+              class="w-full pl-12 pr-4 py-3 bg-bg-alt dark:bg-white/5 border border-transparent focus:border-primary dark:focus:border-accent-gold rounded-xl outline-none transition-all dark:text-white"
+            />
+            <Search class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted dark:text-white/40" />
+            {categoriaQuery !== 'Todos' && <input type="hidden" name="categoria" value={categoriaQuery} />}
+          </form>
+        </div>
+      </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col lg:flex-row gap-12">
+        <!-- Sidebar Filters -->
+        <aside class="w-full lg:w-64 shrink-0">
+          <div class="sticky top-28 p-6 bg-bg-alt dark:bg-white/5 rounded-2xl border border-primary/5">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-lg font-bold text-primary dark:text-white flex items-center gap-2">
+                <SlidersHorizontal class="w-5 h-5" />
+                Filtros
+              </h2>
+              {(categoriaQuery !== 'Todos' || searchQuery) && (
+                <a href="/tienda" class="text-xs text-red-500 hover:underline flex items-center gap-1">
+                  Limpiar <X class="w-3 h-3" />
+                </a>
+              )}
+            </div>
+
+            <!-- Categories -->
+            <div class="mb-8">
+              <h3 class="font-bold text-sm uppercase tracking-wider text-text-muted dark:text-white/40 mb-4">
+                Categorías
+              </h3>
+              <ul class="space-y-2">
+                {categories.map(cat => (
+                  <li>
+                    <a 
+                      href={`/tienda?categoria=${cat}${searchQuery ? `&q=${searchQuery}` : ''}`}
+                      class={`flex items-center justify-between px-3 py-2 rounded-lg transition-all ${
+                        categoriaQuery === cat 
+                        ? 'bg-primary text-white dark:bg-accent-gold dark:text-primary-dark font-bold' 
+                        : 'text-text-muted dark:text-white/60 hover:bg-primary/5 dark:hover:bg-white/10'
+                      }`}
+                    >
+                      {cat}
+                      {categoriaQuery === cat && <ChevronRight class="w-4 h-4" />}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <!-- Banner/Promo -->
+            <div class="mt-8 p-4 bg-primary rounded-xl text-white overflow-hidden relative group">
+              <div class="relative z-10">
+                <p class="text-xs font-bold text-accent-gold uppercase mb-1">Oferta</p>
+                <h4 class="font-bold mb-2">Retro Alianza</h4>
+                <p class="text-sm text-white/80 line-clamp-2 mb-3">Encuentra piezas históricas de colección.</p>
+                <a href="/tienda?categoria=Camisetas" class="text-xs font-bold border-b border-accent-gold pb-1">Ver más</a>
+              </div>
+              <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-accent-gold/20 rounded-full blur-2xl group-hover:scale-150 transition-transform"></div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Product Grid -->
+        <div class="grow">
+          {filteredProducts.length > 0 ? (
+            <>
+              <div class="flex items-center justify-between mb-8">
+                <p class="text-text-muted dark:text-white/60">
+                  Mostrando <span class="font-bold text-primary dark:text-white">{startIndex + 1}-{Math.min(endIndex, filteredProducts.length)}</span> de {filteredProducts.length} productos
+                </p>
+                <div class="flex items-center gap-2">
+                  <span class="text-sm text-text-muted dark:text-white/60">Ordenar por:</span>
+                  <select class="bg-transparent border-none text-sm font-bold text-primary dark:text-white outline-none cursor-pointer">
+                    <option>Destacados</option>
+                    <option>Precio: Menor a Mayor</option>
+                    <option>Precio: Mayor a Menor</option>
+                    <option>Novedades</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
+                {currentProducts.map((product: any) => (
+                  <ProductCard {...product} />
+                ))}
+              </div>
+
+              <!-- Pagination -->
+              {totalPages > 1 && (
+                <div class="mt-16 flex justify-center items-center gap-2">
+                  {currentPage > 1 && (
+                    <a 
+                      href={`/tienda?pagina=${currentPage - 1}${categoriaQuery !== 'Todos' ? `&categoria=${categoriaQuery}` : ''}${searchQuery ? `&q=${searchQuery}` : ''}`}
+                      class="w-12 h-12 flex items-center justify-center rounded-xl bg-bg-alt dark:bg-white/5 text-primary dark:text-white hover:bg-primary hover:text-white dark:hover:bg-accent-gold dark:hover:text-primary-dark transition-all"
+                    >
+                      <ChevronLeft class="w-5 h-5" />
+                    </a>
+                  )}
+                  
+                  {[...Array(totalPages)].map((_, i) => (
+                    <a 
+                      href={`/tienda?pagina=${i + 1}${categoriaQuery !== 'Todos' ? `&categoria=${categoriaQuery}` : ''}${searchQuery ? `&q=${searchQuery}` : ''}`}
+                      class={`w-12 h-12 flex items-center justify-center rounded-xl font-bold transition-all ${
+                        currentPage === i + 1 
+                        ? 'bg-primary text-white dark:bg-accent-gold dark:text-primary-dark shadow-lg scale-110' 
+                        : 'bg-bg-alt dark:bg-white/5 text-primary dark:text-white hover:bg-primary/10 dark:hover:bg-white/10'
+                      }`}
+                    >
+                      {i + 1}
+                    </a>
+                  ))}
+
+                  {currentPage < totalPages && (
+                    <a 
+                      href={`/tienda?pagina=${currentPage + 1}${categoriaQuery !== 'Todos' ? `&categoria=${categoriaQuery}` : ''}${searchQuery ? `&q=${searchQuery}` : ''}`}
+                      class="w-12 h-12 flex items-center justify-center rounded-xl bg-bg-alt dark:bg-white/5 text-primary dark:text-white hover:bg-primary hover:text-white dark:hover:bg-accent-gold dark:hover:text-primary-dark transition-all"
+                    >
+                      <ChevronRight class="w-5 h-5" />
+                    </a>
+                  )}
+                </div>
+              )}
+            </>
+          ) : (
+            <div class="text-center py-20 bg-bg-alt dark:bg-white/5 rounded-3xl border-2 border-dashed border-primary/10">
+              <div class="w-20 h-20 bg-primary/10 dark:bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Search class="w-10 h-10 text-primary dark:text-accent-gold" />
+              </div>
+              <h2 class="text-2xl font-bold text-primary dark:text-white mb-2">No encontramos productos</h2>
+              <p class="text-text-muted dark:text-white/60 mb-8">Intenta con otros filtros o términos de búsqueda.</p>
+              <a href="/tienda" class="btn-primary inline-flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-xl font-bold">
+                Ver todo el catálogo
+              </a>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+  <WhatsAppButton />
+</Layout>
+
+<style>
+  .gradient-text {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+</style>

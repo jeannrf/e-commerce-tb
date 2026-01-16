@@ -1,0 +1,317 @@
+@import "tailwindcss";
+
+/* Force Dark Mode via Class Strategy manually - MUST BE AT TOP */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ===== DESIGN SYSTEM - TRIBUNA SVR ===== */
+
+/* Custom Theme */
+@theme {
+  /* Colors - Alianza Lima Palette - DEEP NAVY */
+  --color-primary: #001233;
+  /* Azul Noche Profundo */
+  --color-primary-light: #001F47;
+  /* Azul Oscuro */
+  --color-primary-dark: #00081C;
+  /* Casi Negro */
+  --color-secondary: #FFFFFF;
+  --color-accent-gold: #C9A227;
+  --color-accent-silver: #A8A9AD;
+  --color-text: #1A1A1A;
+  --color-text-muted: #6B7280;
+  --color-bg-alt: #F8F9FA;
+  --color-bg-dark: #00050A;
+  /* Negro Azulado */
+
+  /* Typography */
+  --font-sans: 'Poppins', sans-serif;
+
+  /* Shadows */
+  --shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-hover: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+  /* Animations */
+  --animate-fade-in: fade-in 0.6s ease-out forwards;
+  --animate-slide-up: slide-up 0.6s ease-out forwards;
+  --animate-scale-in: scale-in 0.4s ease-out forwards;
+  --animate-float: float 6s ease-in-out infinite;
+}
+
+/* Keyframes */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 42, 92, 0.4);
+  }
+
+  50% {
+    box-shadow: 0 0 20px 10px rgba(0, 42, 92, 0);
+  }
+}
+
+/* Base Styles - Light Mode (default) */
+html {
+  scroll-behavior: smooth;
+  background-color: var(--color-secondary);
+  /* Ensure white background by default */
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  background-color: var(--color-secondary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ===== DARK MODE ===== */
+html.dark body {
+  background-color: var(--color-primary-dark);
+  color: #E5E7EB;
+}
+
+html.dark .bg-white {
+  background-color: #0d2847 !important;
+}
+
+html.dark .bg-bg-alt {
+  background-color: #001d40 !important;
+}
+
+html.dark .text-text {
+  color: #E5E7EB !important;
+}
+
+html.dark .text-text-muted {
+  color: #9CA3AF !important;
+}
+
+html.dark .border-bg-alt {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+html.dark .shadow-card {
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3) !important;
+}
+
+/* Dark mode cards */
+html.dark .card-hover {
+  background-color: #0d2847;
+}
+
+/* Dark mode gradient text */
+html.dark .gradient-text {
+  background: linear-gradient(135deg, #FFFFFF 0%, #E5E7EB 50%, var(--color-accent-gold) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Utility Classes */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 50%, var(--color-accent-gold) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glass Effect - Light */
+.glass {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Glass Effect - Dark (for navbar) */
+.glass-dark {
+  background: rgba(0, 18, 51, 0.98);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+html.dark .glass {
+  background: rgba(0, 18, 51, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Button Hover Effect */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn-primary:hover::before {
+  left: 100%;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 42, 92, 0.3);
+}
+
+/* Card Hover */
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* Image Hover Zoom */
+.img-zoom {
+  overflow: hidden;
+}
+
+.img-zoom img {
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.img-zoom:hover img {
+  transform: scale(1.08);
+}
+
+/* Stagger Animation Delays */
+.stagger-1 {
+  animation-delay: 0.1s;
+}
+
+.stagger-2 {
+  animation-delay: 0.2s;
+}
+
+.stagger-3 {
+  animation-delay: 0.3s;
+}
+
+.stagger-4 {
+  animation-delay: 0.4s;
+}
+
+.stagger-5 {
+  animation-delay: 0.5s;
+}
+
+.stagger-6 {
+  animation-delay: 0.6s;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-alt);
+}
+
+html.dark ::-webkit-scrollbar-track {
+  background: var(--color-primary-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-light);
+}
+
+/* Selection */
+::selection {
+  background: var(--color-primary);
+  color: var(--color-secondary);
+}
+
+/* Dark Mode Toggle Button */
+.theme-toggle {
+  transition: transform 0.3s ease;
+}
+
+.theme-toggle:hover {
+  transform: rotate(15deg);
+}

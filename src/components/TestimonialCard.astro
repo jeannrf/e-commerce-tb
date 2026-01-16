@@ -1,0 +1,44 @@
+---
+import { Star, Quote } from 'lucide-astro';
+
+interface Props {
+  name: string;
+  comment: string;
+  rating?: number;
+  location?: string;
+}
+
+const { name, comment, rating = 5, location = "Lima, Perú" } = Astro.props;
+---
+
+<article class="bg-white p-6 lg:p-8 rounded-2xl shadow-card card-hover animate-on-scroll">
+  <!-- Quote Icon -->
+  <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
+    <Quote class="w-6 h-6 text-primary" />
+  </div>
+  
+  <!-- Stars -->
+  <div class="flex gap-1 mb-4">
+    {Array.from({ length: 5 }, (_, i) => (
+      <Star 
+        class={`w-5 h-5 ${i < rating ? 'text-accent-gold fill-accent-gold' : 'text-gray-200'}`}
+      />
+    ))}
+  </div>
+  
+  <!-- Comment -->
+  <blockquote class="text-text text-lg leading-relaxed mb-6">
+    "{comment}"
+  </blockquote>
+  
+  <!-- Author -->
+  <div class="flex items-center gap-3">
+    <div class="w-12 h-12 bg-gradient-to-br from-primary to-primary-light rounded-full flex items-center justify-center">
+      <span class="text-white font-bold text-lg">{name.charAt(0)}</span>
+    </div>
+    <div>
+      <div class="font-bold text-text">{name}</div>
+      <div class="text-sm text-text-muted">{location}</div>
+    </div>
+  </div>
+</article>

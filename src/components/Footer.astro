@@ -1,0 +1,148 @@
+---
+import {
+  Instagram,
+  Facebook,
+  Mail,
+  MapPin,
+  Phone,
+  ShoppingBag,
+} from "lucide-astro";
+---
+
+<footer class="bg-primary text-white">
+  <!-- Main Footer -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+      <!-- Brand -->
+      <div class="lg:col-span-2">
+        <a href="/" class="flex items-center gap-2 group mb-4">
+          <div
+            class="w-10 h-10 bg-white rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform"
+          >
+            <ShoppingBag class="w-5 h-5 text-primary" />
+          </div>
+          <span class="text-2xl font-extrabold tracking-tight">
+            TRIBUNA<span class="text-accent-gold">SVR</span>
+          </span>
+        </a>
+        <p class="text-white/70 max-w-md mb-6">
+          La tienda oficial para el hincha blanquiazul. Vestimos la pasión, la
+          historia y el amor por Alianza Lima.
+        </p>
+
+        <!-- Social Links -->
+        <div class="flex gap-3">
+          <a
+            href="https://instagram.com/tribunasvr"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-accent-gold transition-colors"
+            aria-label="Instagram"
+          >
+            <Instagram class="w-5 h-5" />
+          </a>
+          <a
+            href="https://facebook.com/tribunasvr"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-accent-gold transition-colors"
+            aria-label="Facebook"
+          >
+            <Facebook class="w-5 h-5" />
+          </a>
+          <a
+            href="https://tiktok.com/@tribunasvr"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-accent-gold transition-colors"
+            aria-label="TikTok"
+          >
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"
+              ></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <h3 class="font-bold text-lg mb-4">Enlaces</h3>
+        <ul class="space-y-3">
+          <li>
+            <a
+              href="#novedades"
+              class="text-white/70 hover:text-accent-gold transition-colors"
+            >
+              Novedades 2026
+            </a>
+          </li>
+          <li>
+            <a
+              href="#historica"
+              class="text-white/70 hover:text-accent-gold transition-colors"
+            >
+              Colección Histórica
+            </a>
+          </li>
+          <li>
+            <a
+              href="#accesorios"
+              class="text-white/70 hover:text-accent-gold transition-colors"
+            >
+              Accesorios
+            </a>
+          </li>
+          <li>
+            <a
+              href="#nosotros"
+              class="text-white/70 hover:text-accent-gold transition-colors"
+            >
+              Sobre Nosotros
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div>
+        <h3 class="font-bold text-lg mb-4">Contacto</h3>
+        <ul class="space-y-3">
+          <li>
+            <a
+              href="https://wa.me/51982089087"
+              target="_blank"
+              class="flex items-center gap-2 text-white/70 hover:text-accent-gold transition-colors"
+            >
+              <Phone class="w-4 h-4" />
+              +51 982 089 087
+            </a>
+          </li>
+          <li>
+            <span class="flex items-center gap-2 text-white/70">
+              <MapPin class="w-4 h-4" />
+              Lima, Perú
+            </span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div
+            class="flex flex-col sm:flex-row items-center justify-between gap-4"
+          >
+            <p class="text-white/50 text-sm text-center sm:text-left">
+              © 2026 Tribuna SVR. Todos los derechos reservados.
+            </p>
+            <p class="text-white/50 text-sm">
+              Hecho con 💙 para la hinchada blanquiazul
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
