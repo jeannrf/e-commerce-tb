@@ -1,0 +1,31 @@
+---
+import SanityStudio from "../../components/SanityStudio";
+
+export const prerender = false; // El admin siempre debe ser dinámico
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tribuna SVR | Admin</title>
+
+    <!-- Importante: Evitar estilos globales que rompan el Studio -->
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        height: 100vh;
+      }
+      #sanity {
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Renderizar el Studio solo en el cliente -->
+    <SanityStudio client:only="react" />
+  </body>
+</html>

@@ -23,6 +23,16 @@ export default defineType({
             type: 'number',
         }),
         defineField({
+            name: 'slug',
+            title: 'Slug (URL Amigable)',
+            type: 'slug',
+            options: {
+                source: 'name',
+                maxLength: 96,
+            },
+            validation: (Rule) => Rule.required(),
+        }),
+        defineField({
             name: 'image',
             title: 'Imagen Principal',
             type: 'image',
@@ -31,16 +41,19 @@ export default defineType({
             },
         }),
         defineField({
+            name: 'gallery',
+            title: 'Galería de Imágenes',
+            type: 'array',
+            of: [{ type: 'image' }],
+            options: {
+                layout: 'grid',
+            },
+        }),
+        defineField({
             name: 'category',
             title: 'Categoría',
-            type: 'string',
-            options: {
-                list: [
-                    { title: 'Camisetas', value: 'Camisetas' },
-                    { title: 'Accesorios', value: 'Accesorios' },
-                    { title: 'Retro', value: 'Retro' },
-                ],
-            },
+            type: 'reference',
+            to: [{ type: 'category' }],
             validation: (Rule) => Rule.required(),
         }),
         defineField({

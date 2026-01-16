@@ -1,82 +1,60 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Navbar from '../components/Navbar.astro';
-import Footer from '../components/Footer.astro';
-import ProductCard from '../components/ProductCard.astro';
-import WhatsAppButton from '../components/WhatsAppButton.astro';
-import { ChevronLeft, ChevronRight, SlidersHorizontal, Search, X } from 'lucide-astro';
-import { getProducts, urlFor } from '../lib/sanity';
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+import ProductCard from "../components/ProductCard.astro";
+import WhatsAppButton from "../components/WhatsAppButton.astro";
+import {
+  ChevronRight,
+  SlidersHorizontal,
+  Search,
+  X,
+  Loader2,
+} from "lucide-astro";
 
-// Get params from URL
-const categoriaQuery = Astro.url.searchParams.get('categoria') || 'Todos';
-const pageQuery = parseInt(Astro.url.searchParams.get('pagina') || '1');
-const searchQuery = Astro.url.searchParams.get('q') || '';
+// Ya NO cargamos datos aquí. La página carga instantáneamente.
+export const prerender = true;
 
-// Fetch products from Sanity
-const allProducts = await getProducts();
-
-// Map Sanity data to our component format
-const products = allProducts.map((p: any) => ({
-  id: p._id,
-  name: p.name,
-  price: p.price,
-  oldPrice: p.oldPrice,
-  category: p.category,
-  isNew: p.isNew,
-  image: p.image ? urlFor(p.image).url() : null,
-  description: p.description
-}));
-
-// Filter products
-let filteredProducts = products.filter((p: any) => {
-  const matchesCategory = categoriaQuery === 'Todos' || p.category === categoriaQuery;
-  const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                        p.description.toLowerCase().includes(searchQuery.toLowerCase());
-  return matchesCategory && matchesSearch;
-});
-
-// Pagination settings
-const itemsPerPage = 8;
-const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
-const currentPage = Math.max(1, Math.min(pageQuery, totalPages || 1));
-const startIndex = (currentPage - 1) * itemsPerPage;
-const endIndex = startIndex + itemsPerPage;
-const currentProducts = filteredProducts.slice(startIndex, endIndex);
-
-const categories = ['Todos', 'Camisetas', 'Accesorios', 'Retro'];
+const categories = ["Todos", "Camisetas", "Accesorios", "Retro"];
 ---
 
 <Layout title="Tienda Oficial | Tribuna SVR">
   <Navbar />
-  
-  <main class="pt-24 pb-20 bg-white dark:bg-primary-dark transition-colors duration-300">
+
+  <main
+    class="pt-24 pb-20 bg-white dark:bg-primary-dark transition-colors duration-300 min-h-screen"
+  >
     <!-- Header -->
     <header class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
       <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
-          <nav class="flex items-center gap-2 text-sm text-text-muted mb-4 dark:text-white/60">
+          <nav
+            class="flex items-center gap-2 text-sm text-text-muted mb-4 dark:text-white/60"
+          >
             <a href="/" class="hover:text-primary transition-colors">Inicio</a>
             <span>/</span>
-            <span class="text-primary font-medium dark:text-accent-gold">Tienda</span>
+            <span class="text-primary font-medium dark:text-accent-gold"
+              >Tienda</span
+            >
           </nav>
-          <h1 class="text-4xl lg:text-5xl font-extrabold text-primary dark:text-white">
+          <h1
+            class="text-4xl lg:text-5xl font-extrabold text-primary dark:text-white"
+          >
             Nuestra <span class="gradient-text">Colección</span>
           </h1>
         </div>
-        
+
         <!-- Search Bar -->
         <div class="relative w-full md:w-96">
-          <form action="/tienda" method="GET">
-            <input 
-              type="text" 
-              name="q" 
-              value={searchQuery}
-              placeholder="Buscar productos..." 
-              class="w-full pl-12 pr-4 py-3 bg-bg-alt dark:bg-white/5 border border-transparent focus:border-primary dark:focus:border-accent-gold rounded-xl outline-none transition-all dark:text-white"
-            />
-            <Search class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted dark:text-white/40" />
-            {categoriaQuery !== 'Todos' && <input type="hidden" name="categoria" value={categoriaQuery} />}
-          </form>
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Buscar productos..."
+            class="w-full pl-12 pr-4 py-3 bg-bg-alt dark:bg-white/5 border border-transparent focus:border-primary dark:focus:border-accent-gold rounded-xl outline-none transition-all dark:text-white"
+          />
+          <Search
+            class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted dark:text-white/40"
+          />
         </div>
       </div>
     </header>
@@ -85,129 +63,155 @@ const categories = ['Todos', 'Camisetas', 'Accesorios', 'Retro'];
       <div class="flex flex-col lg:flex-row gap-12">
         <!-- Sidebar Filters -->
         <aside class="w-full lg:w-64 shrink-0">
-          <div class="sticky top-28 p-6 bg-bg-alt dark:bg-white/5 rounded-2xl border border-primary/5">
+          <div
+            class="sticky top-28 p-6 bg-bg-alt dark:bg-white/5 rounded-2xl border border-primary/5"
+          >
             <div class="flex items-center justify-between mb-6">
-              <h2 class="text-lg font-bold text-primary dark:text-white flex items-center gap-2">
+              <h2
+                class="text-lg font-bold text-primary dark:text-white flex items-center gap-2"
+              >
                 <SlidersHorizontal class="w-5 h-5" />
                 Filtros
               </h2>
-              {(categoriaQuery !== 'Todos' || searchQuery) && (
-                <a href="/tienda" class="text-xs text-red-500 hover:underline flex items-center gap-1">
-                  Limpiar <X class="w-3 h-3" />
-                </a>
-              )}
+              <button
+                id="clearFiltersBtn"
+                class="text-xs text-red-500 hover:underline flex items-center gap-1 hidden"
+              >
+                Limpiar <X class="w-3 h-3" />
+              </button>
             </div>
 
             <!-- Categories -->
             <div class="mb-8">
-              <h3 class="font-bold text-sm uppercase tracking-wider text-text-muted dark:text-white/40 mb-4">
+              <h3
+                class="font-bold text-sm uppercase tracking-wider text-text-muted dark:text-white/40 mb-4"
+              >
                 Categorías
               </h3>
               <ul class="space-y-2">
-                {categories.map(cat => (
-                  <li>
-                    <a 
-                      href={`/tienda?categoria=${cat}${searchQuery ? `&q=${searchQuery}` : ''}`}
-                      class={`flex items-center justify-between px-3 py-2 rounded-lg transition-all ${
-                        categoriaQuery === cat 
-                        ? 'bg-primary text-white dark:bg-accent-gold dark:text-primary-dark font-bold' 
-                        : 'text-text-muted dark:text-white/60 hover:bg-primary/5 dark:hover:bg-white/10'
-                      }`}
-                    >
-                      {cat}
-                      {categoriaQuery === cat && <ChevronRight class="w-4 h-4" />}
-                    </a>
-                  </li>
-                ))}
+                {
+                  categories.map((cat) => (
+                    <li>
+                      <button
+                        class="category-btn w-full flex items-center justify-between px-3 py-2 rounded-lg transition-all text-left text-text-muted dark:text-white/60 hover:bg-primary/5 dark:hover:bg-white/10"
+                        data-category={cat}
+                      >
+                        {cat}
+                        <ChevronRight class="w-4 h-4 opacity-0 transition-opacity" />
+                      </button>
+                    </li>
+                  ))
+                }
               </ul>
             </div>
 
             <!-- Banner/Promo -->
-            <div class="mt-8 p-4 bg-primary rounded-xl text-white overflow-hidden relative group">
+            <div
+              class="mt-8 p-4 bg-primary rounded-xl text-white overflow-hidden relative group"
+            >
               <div class="relative z-10">
-                <p class="text-xs font-bold text-accent-gold uppercase mb-1">Oferta</p>
+                <p class="text-xs font-bold text-accent-gold uppercase mb-1">
+                  Oferta
+                </p>
                 <h4 class="font-bold mb-2">Retro Alianza</h4>
-                <p class="text-sm text-white/80 line-clamp-2 mb-3">Encuentra piezas históricas de colección.</p>
-                <a href="/tienda?categoria=Camisetas" class="text-xs font-bold border-b border-accent-gold pb-1">Ver más</a>
+                <p class="text-sm text-white/80 line-clamp-2 mb-3">
+                  Encuentra piezas históricas de colección.
+                </p>
+                <button
+                  data-category="Camisetas"
+                  class="category-promo-btn text-xs font-bold border-b border-accent-gold pb-1"
+                  >Ver más</button
+                >
               </div>
-              <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-accent-gold/20 rounded-full blur-2xl group-hover:scale-150 transition-transform"></div>
+              <div
+                class="absolute -right-4 -bottom-4 w-20 h-20 bg-accent-gold/20 rounded-full blur-2xl group-hover:scale-150 transition-transform"
+              >
+              </div>
             </div>
           </div>
         </aside>
 
-        <!-- Product Grid -->
-        <div class="grow">
-          {filteredProducts.length > 0 ? (
-            <>
-              <div class="flex items-center justify-between mb-8">
-                <p class="text-text-muted dark:text-white/60">
-                  Mostrando <span class="font-bold text-primary dark:text-white">{startIndex + 1}-{Math.min(endIndex, filteredProducts.length)}</span> de {filteredProducts.length} productos
-                </p>
-                <div class="flex items-center gap-2">
-                  <span class="text-sm text-text-muted dark:text-white/60">Ordenar por:</span>
-                  <select class="bg-transparent border-none text-sm font-bold text-primary dark:text-white outline-none cursor-pointer">
-                    <option>Destacados</option>
-                    <option>Precio: Menor a Mayor</option>
-                    <option>Precio: Mayor a Menor</option>
-                    <option>Novedades</option>
-                  </select>
-                </div>
+        <!-- Product Grid & Results -->
+        <div class="grow relative min-h-[500px]">
+          <!-- Loading State -->
+          <div
+            id="loading-state"
+            class="absolute inset-0 z-10 bg-white/50 dark:bg-primary-dark/50 flex flex-col items-center justify-center pt-20"
+          >
+            <Loader2
+              class="w-12 h-12 text-primary dark:text-accent-gold animate-spin mb-4"
+            />
+            <p class="text-primary dark:text-white font-medium animate-pulse">
+              Cargando catálogo...
+            </p>
+          </div>
+
+          <div
+            id="content-area"
+            class="opacity-0 transition-opacity duration-500"
+          >
+            <div class="flex items-center justify-between mb-8">
+              <p class="text-text-muted dark:text-white/60">
+                Mostrando <span
+                  id="showing-range"
+                  class="font-bold text-primary dark:text-white">0-0</span
+                > de <span id="total-results">0</span> productos
+              </p>
+              <div class="flex items-center gap-2">
+                <span class="text-sm text-text-muted dark:text-white/60"
+                  >Ordenar por:</span
+                >
+                <select
+                  id="sortSelect"
+                  class="bg-transparent border-none text-sm font-bold text-primary dark:text-white outline-none cursor-pointer"
+                >
+                  <option value="featured">Destacados</option>
+                  <option value="price-asc">Precio: Menor a Mayor</option>
+                  <option value="price-desc">Precio: Mayor a Menor</option>
+                </select>
               </div>
+            </div>
 
-              <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
-                {currentProducts.map((product: any) => (
-                  <ProductCard {...product} />
-                ))}
-              </div>
+            <!-- Grid Container -->
+            <!-- Products will be injected here via JS -->
+            <div
+              id="products-container"
+              class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 min-h-[400px]"
+            >
+            </div>
 
-              <!-- Pagination -->
-              {totalPages > 1 && (
-                <div class="mt-16 flex justify-center items-center gap-2">
-                  {currentPage > 1 && (
-                    <a 
-                      href={`/tienda?pagina=${currentPage - 1}${categoriaQuery !== 'Todos' ? `&categoria=${categoriaQuery}` : ''}${searchQuery ? `&q=${searchQuery}` : ''}`}
-                      class="w-12 h-12 flex items-center justify-center rounded-xl bg-bg-alt dark:bg-white/5 text-primary dark:text-white hover:bg-primary hover:text-white dark:hover:bg-accent-gold dark:hover:text-primary-dark transition-all"
-                    >
-                      <ChevronLeft class="w-5 h-5" />
-                    </a>
-                  )}
-                  
-                  {[...Array(totalPages)].map((_, i) => (
-                    <a 
-                      href={`/tienda?pagina=${i + 1}${categoriaQuery !== 'Todos' ? `&categoria=${categoriaQuery}` : ''}${searchQuery ? `&q=${searchQuery}` : ''}`}
-                      class={`w-12 h-12 flex items-center justify-center rounded-xl font-bold transition-all ${
-                        currentPage === i + 1 
-                        ? 'bg-primary text-white dark:bg-accent-gold dark:text-primary-dark shadow-lg scale-110' 
-                        : 'bg-bg-alt dark:bg-white/5 text-primary dark:text-white hover:bg-primary/10 dark:hover:bg-white/10'
-                      }`}
-                    >
-                      {i + 1}
-                    </a>
-                  ))}
-
-                  {currentPage < totalPages && (
-                    <a 
-                      href={`/tienda?pagina=${currentPage + 1}${categoriaQuery !== 'Todos' ? `&categoria=${categoriaQuery}` : ''}${searchQuery ? `&q=${searchQuery}` : ''}`}
-                      class="w-12 h-12 flex items-center justify-center rounded-xl bg-bg-alt dark:bg-white/5 text-primary dark:text-white hover:bg-primary hover:text-white dark:hover:bg-accent-gold dark:hover:text-primary-dark transition-all"
-                    >
-                      <ChevronRight class="w-5 h-5" />
-                    </a>
-                  )}
-                </div>
-              )}
-            </>
-          ) : (
-            <div class="text-center py-20 bg-bg-alt dark:bg-white/5 rounded-3xl border-2 border-dashed border-primary/10">
-              <div class="w-20 h-20 bg-primary/10 dark:bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6">
+            <!-- No Results State -->
+            <div
+              id="no-results"
+              class="hidden text-center py-20 bg-bg-alt dark:bg-white/5 rounded-3xl border-2 border-dashed border-primary/10"
+            >
+              <div
+                class="w-20 h-20 bg-primary/10 dark:bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6"
+              >
                 <Search class="w-10 h-10 text-primary dark:text-accent-gold" />
               </div>
-              <h2 class="text-2xl font-bold text-primary dark:text-white mb-2">No encontramos productos</h2>
-              <p class="text-text-muted dark:text-white/60 mb-8">Intenta con otros filtros o términos de búsqueda.</p>
-              <a href="/tienda" class="btn-primary inline-flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-xl font-bold">
+              <h2 class="text-2xl font-bold text-primary dark:text-white mb-2">
+                No encontramos productos
+              </h2>
+              <p class="text-text-muted dark:text-white/60 mb-8">
+                Intenta con otros filtros o términos de búsqueda.
+              </p>
+              <button
+                id="resetFiltersBtn"
+                class="btn-primary inline-flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-xl font-bold"
+              >
                 Ver todo el catálogo
-              </a>
+              </button>
             </div>
-          )}
+
+            <!-- Pagination -->
+            <div
+              id="pagination"
+              class="mt-16 flex justify-center items-center gap-2 hidden"
+            >
+              <!-- Buttons will be injected via JS -->
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -219,9 +223,353 @@ const categories = ['Todos', 'Camisetas', 'Accesorios', 'Retro'];
 
 <style>
   .gradient-text {
-    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--color-primary) 0%,
+      var(--color-primary-light) 100%
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+
+  /* Active category style */
+  .category-btn.active {
+    background-color: var(--color-primary);
+    color: white;
+    font-weight: bold;
+  }
+  :global(.dark) .category-btn.active {
+    background-color: var(--color-accent-gold);
+    color: var(--color-primary-dark);
+  }
+  .category-btn.active svg {
+    opacity: 1;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out forwards;
+  }
 </style>
+
+<script>
+  // @ts-nocheck
+  document.addEventListener("astro:page-load", initStore);
+  if (
+    document.readyState === "complete" ||
+    document.readyState === "interactive"
+  ) {
+    initStore();
+  } else {
+    document.addEventListener("DOMContentLoaded", initStore);
+  }
+
+  let globalProducts = [];
+
+  async function initStore() {
+    const loadingState = document.getElementById("loading-state");
+    const contentArea = document.getElementById("content-area");
+
+    // Fetch products ONLY if not already fetched
+    if (globalProducts.length === 0) {
+      try {
+        const res = await fetch("/api/products.json");
+        if (res.ok) {
+          globalProducts = await res.json();
+        } else {
+          console.error("Error fetching products");
+          // TODO: Show error state
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    // Hide loader, show content
+    if (loadingState) loadingState.style.display = "none";
+    if (contentArea) contentArea.classList.remove("opacity-0");
+
+    // UI Elements
+    const searchInput = document.getElementById("searchInput");
+    const sortSelect = document.getElementById("sortSelect");
+    const categoryBtns = document.querySelectorAll(".category-btn");
+    const clearBtn = document.getElementById("clearFiltersBtn");
+    const resetBtn = document.getElementById("resetFiltersBtn");
+    const promoBtns = document.querySelectorAll(".category-promo-btn");
+
+    // State
+    const itemsPerPage = 6;
+    let currentPage = 1;
+    let currentCategory = "Todos";
+    let currentSearch = "";
+    let currentSort = "featured";
+
+    // Initialize from URL params
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("q")) currentSearch = urlParams.get("q") || "";
+    if (urlParams.get("categoria"))
+      currentCategory = urlParams.get("categoria") || "Todos";
+    if (urlParams.get("pagina"))
+      currentPage = parseInt(urlParams.get("pagina") || "1");
+
+    // Set initial UI values
+    if (searchInput) searchInput.value = currentSearch;
+    updateCategoryUI();
+
+    // Re-bind Events (Idempotent for page transitions)
+    searchInput?.addEventListener("input", (e) => {
+      currentSearch = e.target.value.toLowerCase();
+      currentPage = 1;
+      render();
+    });
+
+    sortSelect?.addEventListener("change", (e) => {
+      currentSort = e.target.value;
+      render();
+    });
+
+    categoryBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const cat = btn.getAttribute("data-category");
+        if (cat) {
+          currentCategory = cat;
+          currentPage = 1;
+          currentSearch = "";
+          if (searchInput) searchInput.value = "";
+          updateCategoryUI();
+          render();
+        }
+      });
+    });
+
+    [clearBtn, resetBtn].forEach((btn) => {
+      btn?.addEventListener("click", () => {
+        currentCategory = "Todos";
+        currentSearch = "";
+        currentPage = 1;
+        if (searchInput) searchInput.value = "";
+        updateCategoryUI();
+        render();
+      });
+    });
+
+    promoBtns.forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const cat = btn.getAttribute("data-category");
+        if (cat) {
+          currentCategory = cat;
+          currentPage = 1;
+          updateCategoryUI();
+          render();
+        }
+      });
+    });
+
+    function updateCategoryUI() {
+      categoryBtns.forEach((btn) => {
+        if (btn.getAttribute("data-category") === currentCategory) {
+          btn.classList.add("active");
+        } else {
+          btn.classList.remove("active");
+        }
+      });
+
+      if (currentCategory !== "Todos" || currentSearch !== "") {
+        clearBtn?.classList.remove("hidden");
+      } else {
+        clearBtn?.classList.add("hidden");
+      }
+
+      // Update URL
+      const params = new URLSearchParams();
+      if (currentCategory !== "Todos") params.set("categoria", currentCategory);
+      if (currentSearch) params.set("q", currentSearch);
+      if (currentPage > 1) params.set("pagina", currentPage.toString());
+      const newUrl = `${window.location.pathname}${params.toString() ? "?" + params.toString() : ""}`;
+      window.history.replaceState({}, "", newUrl);
+    }
+
+    function render() {
+      if (!globalProducts || globalProducts.length === 0) return;
+
+      // 1. Filter
+      let visibleProducts = globalProducts.filter((p) => {
+        const matchCat =
+          currentCategory === "Todos" || p.category === currentCategory;
+        const matchSearch =
+          !currentSearch ||
+          p.name.toLowerCase().includes(currentSearch) ||
+          (p.description &&
+            p.description.toLowerCase().includes(currentSearch));
+
+        return matchCat && matchSearch;
+      });
+
+      // 2. Sort
+      if (currentSort === "price-asc") {
+        visibleProducts.sort((a, b) => a.price - b.price);
+      } else if (currentSort === "price-desc") {
+        visibleProducts.sort((a, b) => b.price - a.price);
+      }
+
+      // 3. Paginate
+      const totalPages = Math.ceil(visibleProducts.length / itemsPerPage);
+      if (currentPage > totalPages) currentPage = Math.max(1, totalPages);
+      const start = (currentPage - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      const pageProducts = visibleProducts.slice(start, end);
+
+      // 4. Update DOM
+      const grid = document.getElementById("products-container");
+      if (grid) {
+        grid.innerHTML = ""; // Clear existing
+        pageProducts.forEach((product) => {
+          const card = createProductCard(product);
+          grid.appendChild(card);
+        });
+      }
+
+      // 5. Update Counts
+      const startCount = visibleProducts.length > 0 ? start + 1 : 0;
+      const endCount = Math.min(end, visibleProducts.length);
+      const showingRange = document.getElementById("showing-range");
+      const totalRes = document.getElementById("total-results");
+      const noRes = document.getElementById("no-results");
+      const pagination = document.getElementById("pagination");
+
+      if (showingRange) showingRange.textContent = `${startCount}-${endCount}`;
+      if (totalRes) totalRes.textContent = visibleProducts.length.toString();
+
+      if (visibleProducts.length === 0) {
+        noRes?.classList.remove("hidden");
+        pagination?.classList.add("hidden");
+      } else {
+        noRes?.classList.add("hidden");
+        pagination?.classList.remove("hidden");
+        renderPagination(totalPages);
+      }
+    }
+
+    function renderPagination(totalPages) {
+      const pagination = document.getElementById("pagination");
+      if (!pagination) return;
+      pagination.innerHTML = "";
+      if (totalPages <= 1) return;
+
+      // Helper for buttons (simplified)
+      const createBtn = (content, onClick, disabled) => {
+        const btn = document.createElement("button");
+        btn.innerHTML = content;
+        btn.disabled = disabled;
+        btn.className = `w-12 h-12 flex items-center justify-center rounded-xl bg-bg-alt dark:bg-white/5 text-primary dark:text-white transition-all ${disabled ? "opacity-50 cursor-not-allowed" : "hover:bg-primary hover:text-white dark:hover:bg-accent-gold dark:hover:text-primary-dark"}`;
+        btn.onclick = onClick;
+        return btn;
+      };
+
+      // Prev
+      pagination.appendChild(
+        createBtn(
+          '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>',
+          () => {
+            currentPage--;
+            render();
+            updateCategoryUI();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          },
+          currentPage === 1,
+        ),
+      );
+
+      // Quick implementation of pages
+      for (let i = 1; i <= totalPages; i++) {
+        const pageBtn = document.createElement("button");
+        pageBtn.textContent = i.toString();
+        const isActive = i === currentPage;
+        pageBtn.className = `w-12 h-12 flex items-center justify-center rounded-xl font-bold transition-all ${isActive ? "bg-primary text-white dark:bg-accent-gold dark:text-primary-dark shadow-lg scale-110" : "bg-bg-alt dark:bg-white/5 text-primary dark:text-white hover:bg-primary/10 dark:hover:bg-white/10"}`;
+        pageBtn.onclick = () => {
+          currentPage = i;
+          render();
+          updateCategoryUI();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        };
+        pagination.appendChild(pageBtn);
+      }
+
+      // Next
+      pagination.appendChild(
+        createBtn(
+          '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>',
+          () => {
+            currentPage++;
+            render();
+            updateCategoryUI();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          },
+          currentPage === totalPages,
+        ),
+      );
+    }
+
+    // HTML Generator for Product Card (Client-side)
+    function createProductCard(p) {
+      const div = document.createElement("div");
+      div.className = "product-item animate-fade-in";
+
+      // This recreates the structure of ProductCard.astro but with pure JS
+      const discount = p.oldPrice
+        ? Math.round((1 - p.price / p.oldPrice) * 100)
+        : 0;
+      const whatsappMessage = encodeURIComponent(
+        `¡Hola Tribuna SVR! 🙋‍♂️ Me interesa el producto: ${p.name} (S/. ${p.price}). ¿Está disponible?`,
+      );
+
+      div.innerHTML = `
+        <article class="group bg-white rounded-2xl overflow-hidden shadow-card card-hover h-full flex flex-col">
+            <div class="relative img-zoom aspect-square bg-gradient-to-br from-bg-alt to-white overflow-hidden">
+                ${
+                  p.image
+                    ? `<img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover" loading="lazy" />`
+                    : `<div class="w-full h-full flex items-center justify-center"><div class="text-6xl font-bold text-primary/10">AL</div></div>`
+                }
+                
+                <div class="absolute top-3 left-3 flex flex-col gap-2">
+                    ${p.isNew ? '<span class="bg-accent-gold text-white px-3 py-1 rounded-full text-xs font-bold uppercase">Nuevo</span>' : ""}
+                    ${p.oldPrice ? `<span class="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase">-${discount}%</span>` : ""}
+                </div>
+
+                <div class="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                    <a href="https://wa.me/51982089087?text=${whatsappMessage}" target="_blank" rel="noopener noreferrer" class="btn-primary inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg font-semibold transform scale-95 group-hover:scale-100 transition-transform">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-cart"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+                        Lo quiero
+                    </a>
+                </div>
+            </div>
+            
+            <div class="p-5 flex-grow flex flex-col">
+                <span class="text-xs font-medium text-text-muted uppercase tracking-wider">${p.category || "Producto"}</span>
+                <h3 class="text-lg font-bold text-text mt-1 group-hover:text-primary transition-colors line-clamp-2">${p.name}</h3>
+                <div class="flex items-center gap-2 mt-3 mt-auto">
+                    <span class="text-xl font-bold text-primary">S/. ${p.price.toFixed(2)}</span>
+                    ${p.oldPrice ? `<span class="text-sm text-text-muted line-through">S/. ${p.oldPrice.toFixed(2)}</span>` : ""}
+                </div>
+            </div>
+        </article>
+        `;
+      return div;
+    }
+
+    // Trigger initial load
+    render();
+  }
+</script>
