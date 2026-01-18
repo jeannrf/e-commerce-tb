@@ -15,7 +15,7 @@ import {
 // Ya NO cargamos datos aquí. La página carga instantáneamente.
 export const prerender = true;
 
-const categories = ["Todos", "Camisetas", "Accesorios", "Retro"];
+const categories = ["Todos", "Camisetas", "Accesorios", "Retro", "Packs"];
 ---
 
 <Layout title="Tienda Oficial | Tribuna SVR">
@@ -61,10 +61,26 @@ const categories = ["Todos", "Camisetas", "Accesorios", "Retro"];
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex flex-col lg:flex-row gap-12">
+        <!-- Mobile Filter Toggle Button -->
+        <button
+          id="filterToggleBtn"
+          class="lg:hidden w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary text-white rounded-xl font-bold mb-4 transition-all hover:bg-primary-light"
+        >
+          <SlidersHorizontal class="w-5 h-5" />
+          <span id="filterToggleText">Mostrar Filtros</span>
+          <ChevronRight
+            class="w-5 h-5 transition-transform"
+            id="filterToggleIcon"
+          />
+        </button>
+
         <!-- Sidebar Filters -->
-        <aside class="w-full lg:w-64 shrink-0">
+        <aside
+          id="filterSidebar"
+          class="w-full lg:w-64 shrink-0 hidden lg:block"
+        >
           <div
-            class="sticky top-28 p-6 bg-bg-alt dark:bg-white/5 rounded-2xl border border-primary/5"
+            class="lg:sticky lg:top-28 p-6 bg-bg-alt dark:bg-white/5 rounded-2xl border border-primary/5"
           >
             <div class="flex items-center justify-between mb-6">
               <h2
@@ -82,7 +98,7 @@ const categories = ["Todos", "Camisetas", "Accesorios", "Retro"];
             </div>
 
             <!-- Categories -->
-            <div class="mb-8">
+            <div>
               <h3
                 class="font-bold text-sm uppercase tracking-wider text-text-muted dark:text-white/40 mb-4"
               >
@@ -96,37 +112,13 @@ const categories = ["Todos", "Camisetas", "Accesorios", "Retro"];
                         class="category-btn w-full flex items-center justify-between px-3 py-2 rounded-lg transition-all text-left text-text-muted dark:text-white/60 hover:bg-primary/5 dark:hover:bg-white/10"
                         data-category={cat}
                       >
-                        {cat}
+                        {cat === "Packs" ? "🎁 Packs Aliancistas" : cat}
                         <ChevronRight class="w-4 h-4 opacity-0 transition-opacity" />
                       </button>
                     </li>
                   ))
                 }
               </ul>
-            </div>
-
-            <!-- Banner/Promo -->
-            <div
-              class="mt-8 p-4 bg-primary rounded-xl text-white overflow-hidden relative group"
-            >
-              <div class="relative z-10">
-                <p class="text-xs font-bold text-accent-gold uppercase mb-1">
-                  Oferta
-                </p>
-                <h4 class="font-bold mb-2">Retro Alianza</h4>
-                <p class="text-sm text-white/80 line-clamp-2 mb-3">
-                  Encuentra piezas históricas de colección.
-                </p>
-                <button
-                  data-category="Camisetas"
-                  class="category-promo-btn text-xs font-bold border-b border-accent-gold pb-1"
-                  >Ver más</button
-                >
-              </div>
-              <div
-                class="absolute -right-4 -bottom-4 w-20 h-20 bg-accent-gold/20 rounded-full blur-2xl group-hover:scale-150 transition-transform"
-              >
-              </div>
             </div>
           </div>
         </aside>
@@ -260,10 +252,84 @@ const categories = ["Todos", "Camisetas", "Accesorios", "Retro"];
   .animate-fade-in {
     animation: fadeIn 0.3s ease-out forwards;
   }
+
+  /* Mobile filter toggle styles */
+  #filterSidebar {
+    transition: all 0.3s ease-out;
+  }
+
+  #filterToggleIcon {
+    transition: transform 0.3s ease;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 1023px) {
+    #filterSidebar.block {
+      animation: slideDown 0.3s ease-out forwards;
+    }
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 </style>
 
 <script>
   // @ts-nocheck
+
+  // ========== MOBILE FILTER TOGGLE (runs immediately) ==========
+  (function initMobileFilters() {
+    const filterSidebar = document.getElementById("filterSidebar");
+    const filterToggleBtn = document.getElementById("filterToggleBtn");
+    const filterToggleText = document.getElementById("filterToggleText");
+    const filterToggleIcon = document.getElementById("filterToggleIcon");
+    let filtersOpen = false;
+
+    if (filterToggleBtn) {
+      filterToggleBtn.addEventListener("click", () => {
+        filtersOpen = !filtersOpen;
+        if (filterSidebar) {
+          if (filtersOpen) {
+            filterSidebar.classList.remove("hidden");
+            filterSidebar.classList.add("block");
+            if (filterToggleText)
+              filterToggleText.textContent = "Ocultar Filtros";
+            if (filterToggleIcon)
+              filterToggleIcon.style.transform = "rotate(90deg)";
+          } else {
+            filterSidebar.classList.add("hidden");
+            filterSidebar.classList.remove("block");
+            if (filterToggleText)
+              filterToggleText.textContent = "Mostrar Filtros";
+            if (filterToggleIcon)
+              filterToggleIcon.style.transform = "rotate(0deg)";
+          }
+        }
+      });
+    }
+
+    // Expose close function globally for use by category buttons
+    window.closeFiltersOnMobile = () => {
+      if (window.innerWidth < 1024 && filtersOpen) {
+        filtersOpen = false;
+        if (filterSidebar) {
+          filterSidebar.classList.add("hidden");
+          filterSidebar.classList.remove("block");
+        }
+        if (filterToggleText) filterToggleText.textContent = "Mostrar Filtros";
+        if (filterToggleIcon) filterToggleIcon.style.transform = "rotate(0deg)";
+      }
+    };
+  })();
+
+  // ========== STORE INITIALIZATION ==========
   document.addEventListener("astro:page-load", initStore);
   if (
     document.readyState === "complete" ||
@@ -348,6 +414,7 @@ const categories = ["Todos", "Camisetas", "Accesorios", "Retro"];
           if (searchInput) searchInput.value = "";
           updateCategoryUI();
           render();
+          window.closeFiltersOnMobile?.(); // Auto-close filters on mobile
         }
       });
     });
