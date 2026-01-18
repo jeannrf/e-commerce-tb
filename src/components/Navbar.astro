@@ -22,6 +22,15 @@ import { Menu, X, ShoppingBag, Phone, Sun, Moon } from "lucide-astro";
       <!-- Desktop Navigation -->
       <div class="hidden lg:flex items-center gap-8">
         <a
+          href="/tienda?categoria=Packs"
+          class="text-white font-bold hover:text-accent-gold transition-colors relative group"
+        >
+          Packs de Oferta
+          <span
+            class="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent-gold transition-all group-hover:w-full"
+          ></span>
+        </a>
+        <a
           href="/tienda?categoria=Camisetas"
           class="text-white/80 font-medium hover:text-accent-gold transition-colors relative group"
         >
@@ -106,6 +115,11 @@ import { Menu, X, ShoppingBag, Phone, Sun, Moon } from "lucide-astro";
     <!-- Mobile Menu -->
     <div id="mobile-menu" class="lg:hidden hidden pb-4">
       <div class="flex flex-col gap-2 pt-4 border-t border-white/10">
+        <a
+          href="/tienda?categoria=Packs"
+          class="text-accent-gold font-bold py-2 transition-colors"
+          >Packs de Oferta</a
+        >
         <a
           href="/tienda?categoria=Camisetas"
           class="text-white/80 font-medium py-2 hover:text-accent-gold transition-colors"

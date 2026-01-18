@@ -33,7 +33,8 @@ const historica = products
 	.slice(0, 4);
 const accesorios = products
 	.filter((p: any) => p.category === "Accesorios")
-	.slice(0, 6);
+	.slice(0, 5);
+const packs = products.filter((p: any) => p.category === "Packs").slice(0, 3);
 
 // Testimonios
 const testimonios = [
@@ -58,7 +59,7 @@ const testimonios = [
 ];
 ---
 
-<Layout title="Tienda Oficial Blanquiazul">
+<Layout title="Tribuna SVR - Tu Tienda Blanquiazul">
 	<Navbar />
 	<main>
 		<!-- Hero Section -->
@@ -98,13 +99,39 @@ const testimonios = [
 				</div>
 			</div>
 		</section>
+		<!-- Packs de Oferta -->
+		<section
+			id="packs"
+			class="py-20 lg:py-28 bg-bg-alt relative overflow-hidden"
+		>
+			<div
+				class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-96 h-96 bg-accent-gold/5 rounded-full blur-3xl"
+			>
+			</div>
+			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+				<SectionTitle
+					title="Packs de Oferta"
+					subtitle="Aprovecha nuestras promociones exclusivas. Más productos, mejor precio."
+				/>
+
+				<div
+					class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+				>
+					{
+						packs.map((producto: any) => (
+							<ProductCard {...producto} />
+						))
+					}
+				</div>
+			</div>
+		</section>
 
 		<!-- Novedades 2026 -->
 		<section id="novedades" class="py-20 lg:py-28">
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<SectionTitle
 					title="La Nueva Piel 2026"
-					subtitle="Las camisetas oficiales de la nueva temporada. Viste los colores con orgullo."
+					subtitle="Las mejores camisetas de la nueva temporada. Viste los colores con orgullo."
 				/>
 
 				<div
@@ -162,12 +189,12 @@ const testimonios = [
 		<!-- Sobre Nosotros -->
 		<section id="nosotros" class="py-20 lg:py-28 bg-bg-alt overflow-hidden">
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-				<div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+				<div class="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
 					<!-- Image -->
 					<div class="animate-on-scroll">
 						<div class="relative">
 							<div
-								class="aspect-[4/3] rounded-3xl overflow-hidden bg-gradient-to-br from-primary to-primary-light shadow-2xl"
+								class="aspect-square rounded-3xl overflow-hidden bg-gradient-to-br from-primary to-primary-light shadow-2xl"
 							>
 								<div
 									class="w-full h-full flex items-center justify-center"
@@ -240,11 +267,13 @@ const testimonios = [
 				/>
 
 				<div
-					class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+					class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center"
 				>
 					{
 						testimonios.map((testimonio) => (
-							<TestimonialCard {...testimonio} />
+							<div class="flex md:last:col-span-2 lg:last:col-span-1 md:last:justify-center lg:last:justify-start">
+								<TestimonialCard {...testimonio} />
+							</div>
 						))
 					}
 				</div>

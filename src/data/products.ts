@@ -18,7 +18,7 @@ export const products: Product[] = [
         category: 'Camisetas',
         isNew: true,
         image: "/images/hero-jersey.png",
-        description: "La piel oficial del equipo del pueblo para la temporada 2026. Siente el orgullo blanquiazul."
+        description: "La piel del equipo del pueblo para la temporada 2026. Siente el orgullo blanquiazul."
     },
     {
         id: '2',
@@ -68,7 +68,7 @@ export const products: Product[] = [
     // Accesorios
     {
         id: '7',
-        name: "Mochila Oficial Blanquiazul",
+        name: "Mochila Blanquiazul",
         price: 129,
         category: 'Accesorios',
         image: "/images/hero-jersey.png",
