@@ -1,5 +1,7 @@
 # Astro Starter Kit: Minimal
 
+https://tribuna-svr.vercel.app/
+
 ```sh
 npm create astro@latest -- --template minimal
 ```
