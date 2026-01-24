@@ -1,106 +1,129 @@
-# 🛒 Tribuna E-commerce
+# <p align="center">🛒 Tribuna E-commerce</p>
 
-Bienvenido al repositorio oficial del e-commerce de **Tribuna**. Una plataforma moderna, rápida y escalable construida con las últimas tecnologías web para ofrecer la mejor experiencia de compra a la hinchada.
-
-🚀 **Sitio en vivo:** [https://tribuna-svr.vercel.app/](https://tribuna-svr.vercel.app/)
-
----
-
-## ✨ Características Principales
-
-- **🛍️ Catálogo Inteligente**: Visualización de productos con carga asíncrona y estados de carga optimizados.
-- **🔍 Búsqueda y Filtros Avanzados**: Encuentra productos por nombre, descripción o categoría con resultados en tiempo real.
-- **📊 Ordenamiento Dinámico**: Clasifica los productos por precio (menor/mayor) o por los más destacados.
-- **📄 Paginación Fluida**: Navegación eficiente a través de grandes catálogos sin recargas de página.
-- **⚡ Rendimiento Extremo**: Construido con **Astro 5** siguiendo la arquitectura de "Islands", logrando un Lighthouse score excepcional.
-- **🎨 Diseño Premium**: Interfaz moderna con soporte nativo para **Modo Oscuro**, micro-animaciones y diseño completamente responsive.
-- **📝 Gestión de Contenido (CMS)**: Integración total con **Sanity.io** para una gestión de inventario intuitiva y actualizaciones instantáneas.
-- **🤖 Admin Embebido**: Acceso al panel de control directamente desde `/admin` mediante **Sanity Studio v3**.
-- **💬 WhatsApp Checkout**: Integración directa con WhatsApp para facilitar el proceso de compra y atención personalizada.
-- **💾 Sistema de Caché**: Implementación de caché en disco para optimizar las peticiones a la API durante el desarrollo.
+<p align="center">
+  <img src="https://img.shields.io/badge/Astro-5.0+-BC52EE?style=for-the-badge&logo=astro&logoColor=white" alt="Astro Version" />
+  <img src="https://img.shields.io/badge/React-19.0-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React Version" />
+  <img src="https://img.shields.io/badge/Tailwind-4.0-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
+  <img src="https://img.shields.io/badge/Sanity-v3-F03E2F?style=for-the-badge&logo=sanity&logoColor=white" alt="Sanity CMS" />
+  <img src="https://img.shields.io/badge/Vercel-Deployed-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Deployment" />
+</p>
 
 ---
 
-## 🛠️ Tech Stack
+<p align="center">
+  <b>Una plataforma de comercio electrónico de alto rendimiento diseñada para la hinchada de Tribuna SVR.</b><br>
+  Construida con la arquitectura de "Islands" para garantizar velocidad, SEO y una experiencia de usuario premium.
+</p>
 
-El proyecto utiliza un stack tecnológico de vanguardia para garantizar estabilidad y velocidad:
+<p align="center">
+  <a href="https://tribuna-svr.vercel.app/"><strong>Explorar Sitio en Vivo »</strong></a>
+</p>
 
-- **Framework**: [Astro 5](https://astro.build/) (Static Site Generation & Server-side Rendering)
-- **UI Libraries**: [React 19](https://reactjs.org/) (para componentes dinámicos y el CMS Studio)
-- **Estilos**: [Tailwind CSS 4](https://tailwindcss.com/) (utilizando el nuevo motor JIT)
-- **Base de Datos / CMS**: [Sanity.io](https://www.sanity.io/) (Headless CMS)
-- **Iconografía**: [Lucide Astro](https://lucide.dev/)
-- **Despliegue**: [Vercel](https://vercel.com/)
+<p align="center">
+  <img src="./public/assets/readme/preview.png" alt="Tribuna Store Preview" width="800" style="border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.3);" />
+</p>
 
 ---
 
-## 📁 Estructura del Proyecto
+## 🚀 Vision General
+
+**Tribuna E-commerce** no es solo una tienda virtual; es una herramienta de gestión completa. Combina la velocidad de un sitio estático con la flexibilidad de un CMS moderno, permitiendo actualizaciones en tiempo real sin sacrificar el rendimiento.
+
+### Why Astro 5?
+- **Zero JS by default**: Las páginas cargan instantáneamente.
+- **Hybrid Rendering**: Páginas estáticas para el catálogo y dinámicas para el carrito y el admin.
+- **View Transitions**: Navegación fluida entre páginas sin recargar el navegador.
+
+---
+
+## ✨ Características Destacadas
+
+### 🛍️ Experiencia de Compra
+- **Búsqueda Instantánea**: Sistema de filtrado reactivo por categorías, precios y términos.
+- **Checkout vía WhatsApp**: Proceso de compra simplificado que conecta directamente al cliente con el vendedor.
+- **Product Gallery**: Visualización detallada de productos con zoom y optimización de imágenes.
+
+### 🛠️ Herramientas de Administración
+- **Dashboard Embebido**: Gestiona inventario, categorías y banners desde `/admin`.
+- **Caché Inteligente**: Sistema de persistencia en disco para acelerar el desarrollo local.
+- **Detección de Stock**: Indicadores visuales automáticos para nuevos productos y ofertas.
+
+### 🎨 Diseño y UI
+- **Modo Oscuro Adaptativo**: Soporte completo para temas claros y oscuros basado en la preferencia del sistema.
+- **Micro-interacciones**: Animaciones suaves con Tailwind 4 y Framer-style transitions.
+- **Mobile First**: Optimizado para dispositivos móviles, garantizando una navegación táctil fluida.
+
+---
+
+## 🛠️ Stack de Tecnologías
+
+| Tecnología | Propósito |
+| :--- | :--- |
+| **Astro 5** | Framework principal y orquestador de componentes. |
+| **React 19** | Manejo de estados complejos y renderizado del CMS Studio. |
+| **Tailwind CSS 4** | Sistema de diseño moderno con variables CSS dinámicas. |
+| **Sanity.io** | Headless CMS para la gestión de productos y contenido multimedia. |
+| **Lucide Icons** | Set de iconos vectoriales consistentes y ligeros. |
+| **Vercel** | Infraestructura de despliegue y CI/CD. |
+
+---
+
+## 📁 Estructura del Ecosistema
 
 ```text
 /
-├── public/          # Recursos estáticos (imágenes, fuentes, etc.)
-├── sanity/          # Esquemas de datos y configuración del CMS
+├── public/               # Activos estáticos y logos
+│   └── assets/           # Imágenes y recursos multimedia
+├── sanity/               # Configuración del Backend (Schemas & Structure)
+│   ├── schema/           # Modelos de datos (Products, Categories)
+│   └── plugins/          # Extensiones del Sanity Studio
 ├── src/
-│   ├── components/  # Componentes modulares (.astro y .tsx)
-│   ├── data/        # Datos locales y constantes
-│   ├── layouts/     # Estructuras base de las páginas (Layout, SEO)
-│   ├── lib/         # Clientes de API y utilidades (Sanity client)
-│   ├── pages/       # Sistema de rutas (Index, Tienda, Admin, API)
-│   └── styles/      # Tokens de diseño y configuración de Tailwind
-├── astro.config.mjs # Configuración maestra de Astro
-└── sanity.config.ts # Punto de entrada para el Sanity Studio
+│   ├── components/       # Componentes atómicos y moleculares
+│   ├── layouts/          # Plantillas de página (SEO-ready)
+│   ├── lib/              # SDKs y Clientes (Sanity, API Helpers)
+│   ├── pages/            # Sistema de rutas basado en archivos
+│   │   ├── api/          # Endpoints internos para el catálogo
+│   │   └── admin/        # Ruta del panel de administración
+│   └── styles/           # Configuración global y capas de Tailwind
+└── astro.config.mjs      # Cerebro del proyecto Astro
 ```
 
 ---
 
-## 🚀 Instalación y Desarrollo Local
+## ⚙️ Configuración para Desarrolladores
 
-Sigue estos pasos para configurar el entorno de desarrollo:
+### 1. Clonar y Preparar
+```bash
+git clone https://github.com/jeannrf/e-commerce-tb.git
+cd e-commerce-tb
+npm install
+```
 
-1. **Requisitos previos**:
-   - Node.js 18.x o superior
-   - Una cuenta en Sanity (si deseas usar tu propio proyecto)
+### 2. Variables de Entorno
+Crea un archivo `.env` en la raíz (o configura en el dashboard de Sanity):
+```env
+PUBLIC_SANITY_PROJECT_ID=3u2452q3
+PUBLIC_SANITY_DATASET=production
+```
 
-2. **Clonar el repositorio**:
-   ```bash
-   git clone https://github.com/jeannrf/e-commerce-tb.git
-   cd e-commerce-tb
-   ```
-
-3. **Instalar dependencias**:
-   ```bash
-   npm install
-   ```
-
-4. **Variables de Entorno**:
-   El proyecto utiliza el Project ID `3u2452q3` por defecto. Si deseas usar el tuyo, actualiza `src/lib/sanity.ts`.
-
-5. **Iniciar servidor de desarrollo**:
-   ```bash
-   npm run dev
-   ```
-
-6. **Explorar**:
-   Abre [http://localhost:4321](http://localhost:4321) para ver la tienda o [http://localhost:4321/admin](http://localhost:4321/admin) para el panel de control.
+### 3. Comandos Útiles
+- `npm run dev`: Inicia el entorno de desarrollo local.
+- `npm run build`: Genera la versión de producción optimizada.
+- `npm run preview`: Previsualiza la build de producción localmente.
+- `npm run astro check`: Ejecuta el linter de TypeScript y Astro.
 
 ---
 
-## ⚙️ Configuración del CMS
+## 📈 Rendimiento y SEO
 
-Para gestionar los productos:
-1. Accede a la ruta `/admin` en tu navegador.
-2. Inicia sesión con tus credenciales de Sanity.
-3. Puedes crear, editar o eliminar productos, categorías y banners principales.
-4. Los cambios se reflejarán automáticamente en el sitio gracias a la integración nativa.
-
----
-
-## 📝 Notas de Implementación
-
-- **Optimización de Imágenes**: Astro se encarga de procesar y servir las imágenes en formatos modernos (WebP/AVIF) para reducir el ancho de banda.
-- **Dark Mode**: Implementado mediante clases de Tailwind, detectando automáticamente la preferencia del sistema del usuario.
-- **Interacciones**: Se ha priorizado el uso de componentes de Astro para mantener el bundle de JS al mínimo, usando React solo donde es estrictamente necesario.
+El sitio está optimizado siguiendo las mejores prácticas de la industria:
+- **Meta-tags dinámicos**: Títulos y descripciones únicas por producto.
+- **Sitemap automático**: Generación de `sitemap.xml` para mejores resultados en Google.
+- **Compresión de imágenes**: Uso de formatos de última generación para reducir el LCP (Largest Contentful Paint).
 
 ---
 
-Desarrollado con ❤️ para **Tribuna SVR**.
+<p align="center">
+  Diseñado con pasión por la hinchada y para la hinchada. 🔵⚪<br>
+  <strong>Tribuna SVR © 2026</strong>
+</p>
